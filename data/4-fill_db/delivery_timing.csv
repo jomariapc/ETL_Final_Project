@@ -1,0 +1,4 @@
+delivery_timing_id,delivery_timing
+1,Immediately
+2,Scheduled
+3,Unknown

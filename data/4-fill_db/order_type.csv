@@ -1,0 +1,5 @@
+order_type_id,order_type
+1,DELIVERY
+2,PICK UP
+3,OWN DELIVERY
+4,UNKNOWN

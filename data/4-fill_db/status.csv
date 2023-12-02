@@ -1,0 +1,6 @@
+status_id,status
+1,DELIVERED
+2,NEW
+3,CANCELED
+4,UNKNOWN
+5,ACCEPTED
