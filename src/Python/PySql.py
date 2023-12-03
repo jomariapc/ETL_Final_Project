@@ -1,14 +1,13 @@
+import pandas as pd
+
 #CREATE DICTIONARY WITH THE COLUMN NAMES AND THE COLUMN TYPES
 def create_dictio(df):
 
     column_types= {}
 
     for e in df:
-        
-        if ('object' in str(df[e].dtype)):
-            column_types[e]='VARCHAR(50)'
 
-        elif ('float' in str(df[e].dtype)):
+        if ('float' in str(df[e].dtype)):
             column_types[e]='FLOAT'
 
         elif ('int' in str(df[e].dtype)):
@@ -22,7 +21,7 @@ def create_dictio(df):
         
 
 #CREATE TABLES
-def create_table(table_name, column_names_types):
+def create_table(table_name, column_names_types, cursor):
     """
     Function that receives the name of the table "table_name", 
     a dictionary "column_names_types" with the format 
@@ -31,26 +30,55 @@ def create_table(table_name, column_names_types):
     Returns the string with the query for create table
 
     """
-    query=f'CREATE TABLE `{table_name}`('
 
-    #Add all the columns to the string from the dictio
+    cursor.execute(f'DROP TABLE IF EXISTS `{table_name}`;\n')
+    
+    # Add CREATE TABLE statement
+    query = f'CREATE TABLE `{table_name}`('
 
+    # Add all the columns to the string from the dictionary
     for key, value in column_names_types.items():
+
+        query += f'{key} {value}, '
+
+    cursor.execute(query[:-2] + ');')
+
+def create_tables(db_structure, cursor):
         
-        query= query + key + ' ' + value + ', '
+    for table, keys in db_structure.items():
+        #Read dataframe
+        df = pd.read_csv(f'../../data/4-fill_db/{table}.csv')
+        #Create table with dataframe
+        create_table(table, create_dictio(df), cursor)
+        
+        # Check and add primary keys
+        if 'primary_keys' in keys:
+            primary_keys_str = ', '.join([f'`{pk}`' for pk in keys['primary_keys']])
+            primary_key_query = f'ALTER TABLE `{table}` ADD PRIMARY KEY ({primary_keys_str});'
+            cursor.execute(primary_key_query)
 
-    #Erase the last comma
-    return query[0:-2] + ')'
+        if 'foreign_keys' in keys:
+            for fk_info in keys['foreign_keys']:
+                foreign_key_str = ', '.join([f'`{fk}`' for fk in fk_info['fk']])
+                reference_str = f"`{fk_info['reference_table']}` (`{fk_info['reference_column']}`)"
+                foreign_key_query = f'ALTER TABLE `{table}` ADD FOREIGN KEY ({foreign_key_str}) REFERENCES {reference_str};'
+                cursor.execute(foreign_key_query)
+
+        #Insert values
+        insert_values(table, df, cursor)
 
 
-#CREATE PRIMARY KEY
-def create_pk(table_name, primary_key):
+#INSERT VALUES
+def insert_values(table_name, df, cursor):
 
-    return f'ALTER TABLE `{table_name}` ADD PRIMARY KEY ({primary_key});'
+    column_names = ','.join(df.columns)
 
-#CREATE FOREIGN KEY    
-def create_fk(table_name, foreign_key, reference_table, reference_key):
+    # For each row
 
-    return f'ALTER TABLE `{table_name}` ADD FOREIGN KEY ({foreign_key}) REFERENCES `{reference_table}`({reference_key});'
+    for i in range(df.shape[0]):   
+        
+        values = tuple(df.iloc[i].values)   
+        
+        cursor.execute(f'insert into `{table_name}` ({column_names}) values {values};')
 
 
