@@ -3,6 +3,7 @@ passwords.txt
 src/.ipynb_checkpoints
 src/__pycache__
 /drivers
+*.pbix
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
