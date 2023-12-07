@@ -1,73 +1,95 @@
-<p width="80%" >
+<p width="80%" align="center">
   <img src="img/head_readme.png" alt="Tepuy Logo">
 </p>
 
-# Final Project - ETL - Tepuy Burger
+# Final Project - ETL for Tepuy Burger
 
 ## **About Tepuy Burger**
-Tepuy Burger is a hamburger chain created in 2017. After an organic and constant growth based on the quality of their burgers, today it has 3 restaurants in Alicante & Benidorm, and expects to extend their business in the next months.
+Founded in 2017, Tepuy Burger is a gourmet burger chain. Known for their quality offerings, they have experienced organic growth, currently boasting three locations in Alicante & Benidorm, with plans for further expansion in the upcoming months.
 
-## **Software Issues**
-Based in their not expected growth, this enterprise today manages its business with several softwares that have nothing to do with each other.
+## **Software Challenges**
+Due to their unexpected growth, the company now operates using a myriad of unrelated software solutions.
 
-The ones that are relevant to the current project are the following:
+The ones pertinent to this project include:
 
-- Otter – To manage delivery services for three of the delivery apps.
-- Deliverect – To manage delivery services for one of the delivery apps. It came after Otter, so they repeat some of the information.
-- Gloria Food - To manage delivery services from the own website. 
+- Otter – Manages delivery services across three delivery apps.
+- Deliverect – Manages delivery services for an additional delivery app, overlapping some data with Otter.
+- Gloria Food - Manages delivery orders from the company's own website.
 
-## **Project Main Objective**
-As a strong growth is expected in the short term, the enterprise is trying to join and understand all the information from the SW platforms, and this project aims to integrate in one single database the delivery information from different applications (Glovo, Uber eats, Just Eat, and own web). This is a small part of the total integration project of all their products and systems.
+## **Primary Objective of the Project**
+With significant short-term growth anticipated, the company aims to consolidate and comprehend data across software platforms. This project seeks to unify delivery information from various applications (Glovo, Uber Eats, Just Eat, and the company's own website) into a single database. This initiative is a component of a broader project to integrate all of their products and systems.
 
 ## **Project Development**
-
-### *EXTRACTION*
-#### ***Data Extraction***
-- **Step 1** – Data extraction (Glovo, Uber Eats, and Tepuy web delivery information from a CSV file)
+### STEP 1: ETL
+#### *EXTRACTION*
+***Data Extraction***
+- **Data Source 1** – Extracts data from Glovo, Uber Eats, and Tepuy's web delivery service from CSV files.
   - Related document: [I.Data_Extraction.ipynb](https://github.com/jomariapc/ETL_Project/blob/main/src/Jupyter_Notebook/I.Data_Extraction.ipynb)
-- **Step 2** – Data extraction (Just Eat information extraction from a CSV files)
-- **Step 3** – Data extraction (GloriaFood information extraction from API)
+- **Data Source 2** – Extracts data from Just Eat from CSV files.
+- **Data Source 3** – Retrieves data from GloriaFood via API.
 
-### *TRANSFORM*
-#### ***Data Cleaning***
-Limpieza de cada una de las fuentes de datos por separado.
+#### *TRANSFORM*
+***Data Cleaning***
+  Cleaning each data source separately.
 - Related documents:  
-    - [I-S1_Cleaning.Ipynb]() 
+    - [II-S1_Cleaning.Ipynb]() 
     - [I-S2_Cleaning.Ipynb]()
     - [I-S3_Cleaning.Ipynb]()
 
-#### ***EDA (Exploratory Data Analysis) ***
-- Related documents: [III.Data_Unification.ipynb]()
+***EDA (Exploratory Data Analysis)***
+- Related documents: 
+  - [II-S1_EDA.ipynb]()
+  - [II-S2_EDA.ipynb]()
 
-#### ***Database Analysis***
-- Related document: [IV.Database.ipynb](https://github.com/jomariapc/ETL_Project/blob/main/src/Jupyter_Notebook/IV.Database.ipynb)
+***Data Unification***
+Unifying data related to orders.
+- Related document: 
+  - [III-Data_Unification_Orders.ipynb]()
+Unifying data related to order items (products).
+- Related document: 
+  - [III-Data_Unification_Items.ipynb]()
 
-### *LOADING*
-#### ***Database Filling***
-- Related document: [V.Database_filling.ipynb](https://github.com/jomariapc/ETL_Project/blob/main/src/Jupyter_Notebook/V.Database_filling.ipynb)
+**Data Cleaning and DataFrame Processing Functions**
+- Related document: [PySql.py]()
 
-#### ***ERD***
+#### *LOAD*
+***Database Structure***
+- Analysis, separation, and creation of related tables for database design and loading.
+- Related document: [IV-Database_structure.ipynb]()
+
+***Database Population***
+- Related document: [V-Database_fill.ipynb]()
+
+**Database Loading Functions**
+- Related document: [PySql.py]()
+
+***ERD***
 ![ERD Image](/img/ERD.png)
 
+### ***STEP 2: VISUALIZATION***
 
-#### ***Extra information***
+Development of an interactive dashboard divided into three key segments to visualize sales trends, top-selling products, and performance by region. The dashboard allows for date filtering, peak demand identification, and adjustments to operational and marketing strategies.
 
-##### ***Python files***
-Data Cleaning and Processing DataFrames functions
-- Related document: [PyPower.py](https://github.com/jomariapc/ETL_Project/blob/main/src/Python/PyPower.py)
+#### Orders
+![Orders](/img/Dashboard/ordenes.png)
 
-Database loading functions
-- Related document: [PySql.py](https://github.com/jomariapc/ETL_Project/blob/main/src/Python/PySql.py)
+#### Top 5 Products
+![Products](/img/Dashboard/productos.png)
 
+#### Channels
+![Channels](/img/Dashboard/canales.png)
 
-#### *** Next steps ***
+## NEXT STEPS
 
-1. Visualization of the information obtained through an interactive dashboard.
-- Related repo: [Viz_Project](https://github.com/jomariapc/Viz_Project)
+1. Integration of additional company systems via APIs:
+- Tipsi – POS system for order management.
+- Cover manager – Software for managing table reservations.
+- Mapal reputation – For managing delivery and dine-in reviews.
+2. Data upload to a cloud service.
+3. With all data loaded and centralized, train machine learning models for sales predictions, product performance, reservation trends, customer behavior analysis, etc.
 
-2. Integration through API of the other systems used by the company:
-
-- Gloria foods – Restaurant order system
-- Tipsi – TPV system to manage orders
-- Cover manager – Software to manage table reservations
-- Mapal reputation – To manage delivery and eat in reviews.
+## Interested in previous work?
+- ***First ETL.***
+  - Related Document: [link]
+- ***Initial Dashboard.***
+  - Related Document: [link]
